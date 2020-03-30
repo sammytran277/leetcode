@@ -1,34 +1,25 @@
 // https://leetcode.com/problems/valid-anagram/
 
-import java.util.HashMap;
-
-class ValidAnagram
+public class ValidAnagram
 {
     public boolean isAnagram(String s, String t) 
     {
         if (s.length() != t.length())
             return false;
         
-        HashMap<Character, Integer> sFreq = new HashMap<Character, Integer>();
-        HashMap<Character, Integer> tFreq = new HashMap<Character, Integer>();
+        int[] charFreq = new int[26];
 
-        // Hash all the characters in s and t
+        // Increment counter for s, decrement for t
         for (int i = 0; i < s.length(); i++)
         {
-            if (!sFreq.containsKey(s.charAt(i)))
-                sFreq.put(s.charAt(i), 1);
-            else
-                sFreq.put(s.charAt(i), sFreq.get(s.charAt(i)) + 1);
-            if (!tFreq.containsKey(t.charAt(i)))
-                tFreq.put(t.charAt(i), 1);
-            else
-                tFreq.put(t.charAt(i), tFreq.get(t.charAt(i)) + 1);
+            charFreq[s.charAt(i) - 'a']++;
+            charFreq[t.charAt(i) - 'a']--;
         }
 
-        // Check that the frequency of both letters are the same
-        for (char key : sFreq.keySet())
+        // Check the frequency of all chars is 0
+        for (int n : charFreq)
         {
-            if (!sFreq.get(key).equals(tFreq.get(key)))
+            if (n != 0)
                 return false;
         }
 
