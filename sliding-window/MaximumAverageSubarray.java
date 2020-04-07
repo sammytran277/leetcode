@@ -11,16 +11,10 @@ public class MaximumAverageSubarray
             currSum += nums[i];
         double maxSum = currSum;
         
-        // If n = k, then we just return the average of the entire array
-        if (n == k)
-            return currSum / k;
-        
-        int slow = 0, fast = k;
-        while (fast < n)
+        for (int i = k; i < n; i++)
         {
-            currSum = currSum + nums[fast++] - nums[slow++];
-            if (currSum > maxSum)
-                maxSum = currSum;
+            currSum += nums[i] - nums[i - k];
+            maxSum = Math.max(currSum, maxSum);
         }
         
         return maxSum / k;
