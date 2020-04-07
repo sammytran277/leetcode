@@ -1,8 +1,8 @@
 // https://leetcode.com/problems/maximum-subarray/
 
-public class MaximumSubArray 
+public class MaximumSubarray 
 {
-    public int maxSubArray(int[] nums) 
+    public int maxSubarray(int[] nums) 
     {
         // Solved with an implementation of Kadane's Algorithm
         int localMax = 0;
