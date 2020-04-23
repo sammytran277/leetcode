@@ -9,6 +9,9 @@ public class SubarraySumEqualsK
         HashMap<Integer, Integer> prefix = new HashMap<Integer, Integer>();
         int currSum = 0, count = 0;
         
+        /* Idea is to keep a table mapping a sum to its number of occurrences.
+           This allows you to iterate through the array once and check if the complement
+           is in the table. If it is, then it is possible to make the target, k */
         for (int i = 0; i < nums.length; i++) 
         {
             currSum += nums[i];
