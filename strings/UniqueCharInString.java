@@ -1,24 +1,18 @@
 // https://leetcode.com/problems/first-unique-character-in-a-string/
 
-import java.util.HashMap;
-
-class UniqueCharInString
+public class UniqueCharInString 
 {
     public int firstUniqChar(String s) 
     {
-        HashMap<Character, Integer> charFreq = new HashMap<Character, Integer>();
+        int[] charFreq = new int[26];
+        
         for (char c : s.toCharArray())
+            charFreq[c - 'a']++;
+        
+        for (int i = 0; i < s.length(); i++)
         {
-            if (charFreq.containsKey(c))
-                charFreq.put(c, charFreq.get(c) + 1);
-            else
-                charFreq.put(c, 1);
-        }
-
-        for (char c : s.toCharArray())
-        {
-            if (charFreq.get(c) == 1)
-                return s.indexOf(c);
+            if (charFreq[s.charAt(i) - 'a'] == 1)
+                return i;
         }
 
         return -1;
