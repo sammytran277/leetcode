@@ -30,4 +30,3 @@ public class MaximumProductSubarray
         return globalMax;
     }
 }
-}
