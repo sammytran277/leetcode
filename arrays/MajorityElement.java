@@ -1,5 +1,7 @@
 // https://leetcode.com/problems/majority-element/
 
+import java.util.HashMap;
+
 public class MajorityElement
 {
     public int majorityElement(int[] nums) 
