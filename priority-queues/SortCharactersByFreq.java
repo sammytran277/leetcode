@@ -1,11 +1,15 @@
 // https://leetcode.com/problems/sort-characters-by-frequency/
 
+import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.Comparator;
+
 public class SortCharactersByFreq 
 {
     public String frequencySort(String s) 
     {
         HashMap<Character, Integer> charFreq = new HashMap<Character, Integer>();
-        PriorityQueue<Character> pq = new PriorityQueue(new Comparator<Character>() {
+        PriorityQueue<Character> pq = new PriorityQueue<Character>(new Comparator<Character>() {
             public int compare(Character a, Character b) 
             {
                 if (charFreq.get(a) > charFreq.get(b))
