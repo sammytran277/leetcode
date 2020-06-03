@@ -1,5 +1,7 @@
 // https://leetcode.com/problems/remove-k-digits/
 
+import java.util.Stack;
+
 public class RemoveKDigits 
 {
     public String removeKdigits(String num, int k) 
