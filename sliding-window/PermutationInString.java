@@ -3,57 +3,41 @@
 import java.util.HashMap;
 
 public class PermutationInString {
-    public boolean checkInclusion(String p, String s) {
-        HashMap<Character, Integer> charFreq = new HashMap<Character, Integer>();
-        int slow = 0, fast = -1;
-        
-        // Trivial case
-        if (s.length() < p.length()) 
+    public boolean checkInclusion(String s1, String s2) {
+        int[] charFreq = new int[26];
+        int len1 = s1.length();
+        int len2 = s2.length();
+            
+            // Trivial case
+        if (len1 > len2)
             return false;
-        
-        // Get char frequency of p
-        for (char c : p.toCharArray())
-            charFreq.put(c, charFreq.getOrDefault(c, 0) + 1);
-        
-        int missing = charFreq.size();
-        while (fast < s.length() - 1) 
-        {
-            // Widen the window if the fast pointer is pointing at a char in p
-            fast++;
-            if (charFreq.containsKey(s.charAt(fast))) 
-            {
-                charFreq.put(s.charAt(fast), charFreq.get(s.charAt(fast)) - 1);
-                if (charFreq.get(s.charAt(fast)) == 0) 
-                    missing--;
-            } 
-            else 
-            {
-                // Shrink the window while a char that is not in p is in the window
-                while (slow <= fast) 
-                {
-                    if (charFreq.containsKey(s.charAt(slow))) 
-                    {
-                        if (charFreq.get(s.charAt(slow)) == 0) 
-                            missing++;
-                        charFreq.put(s.charAt(slow), charFreq.get(s.charAt(slow)) + 1);
-                    }
-                    
-                    slow++;
-                }
-            }
-
-            // Once the window is of size p, check if it is an anagram of p
-            if (fast - slow + 1 == p.length()) 
-            {
-                if (missing == 0) 
-                    return true;
-                if (charFreq.get(s.charAt(slow)) == 0) 
-                    missing++;
-                charFreq.put(s.charAt(slow), charFreq.get(s.charAt(slow)) + 1);
-                slow++;
-            }
+            
+            // Bring the window up to size len1
+        for (int i = 0; i < len1; i++) {
+            charFreq[s1.charAt(i) - 'a']++;
+            charFreq[s2.charAt(i) - 'a']--;
         }
-        
+    
+        if (isMatch(charFreq))
+            return true;     
+            
+            // Slide the window over by 1
+        for (int i = len1; i < len2; i++) {
+            charFreq[s2.charAt(i) - 'a']--;
+            charFreq[s2.charAt(i - len1) - 'a']++;
+            if (isMatch(charFreq))
+                return true;
+        }
+    
         return false;
+    }
+    
+    public boolean isMatch(int[] A) {
+        for (int i = 0; i < 26; i++) {
+            if (A[i] != 0)
+                return false;
+        }
+    
+        return true;
     }
 }
