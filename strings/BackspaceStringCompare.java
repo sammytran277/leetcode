@@ -2,33 +2,26 @@
 
 public class BackspaceStringCompare 
 {
-    public boolean backspaceCompare(String S, String T) 
-    {
-        StringBuilder realS = new StringBuilder();
-        StringBuilder realT = new StringBuilder();
-        
-        // Build the actual string for S
-        for (int i = 0; i < S.length(); i++)
-        {
-            if (realS.length() > 0 && S.charAt(i) == '#')
-                realS.deleteCharAt(realS.length() - 1);
-            else if (S.charAt(i) != '#')
-                realS.append(S.charAt(i));
+    public boolean backspaceCompare(String S, String T) {
+        int sLen = S.length();
+        int tLen = T.length();
+    
+        return build(S, sLen).equals(build(T, tLen));
+    }
+    
+    public String build(String s, int n) {
+        StringBuilder sb = new StringBuilder();
+        int backspaces = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            if (s.charAt(i) == '#') {
+                backspaces++;
+            } else if (backspaces > 0) {
+                backspaces--;
+            } else {
+                sb.append(s.charAt(i));
+            }
         }
-        
-        // Build the actual string for T
-        for (int i = 0; i < T.length(); i++)
-        {
-            if (realT.length() > 0 && T.charAt(i) == '#')
-                realT.deleteCharAt(realT.length() - 1);
-            else if (T.charAt(i) != '#')
-                realT.append(T.charAt(i));
-        }
-        
-        // Compare the actual strings
-        if (realS.toString().equals(realT.toString()))
-            return true;
-        else
-            return false;
+    
+        return sb.toString();
     }
 }
