@@ -1,28 +1,27 @@
 // https://leetcode.com/problems/happy-number/
 
-import java.util.HashSet;
-
-public class HappyNumbers
-{
-    public static boolean isHappy(int n) 
-    {
-        HashSet<Integer> sums = new HashSet<Integer>();
+public class HappyNumbers {
+    // Use Floyd's Tortoise and Hare Algorithm
+    public boolean isHappy(int n) {
+        int slow = n;
+        int fast = n;
+        do {
+            slow = sumOfSquares(slow);
+            fast = sumOfSquares(sumOfSquares(fast));
+        } while (slow != fast);
         
-        int digitSum;
-        char[] nChars;
-        while (n != 1)
-        {
-            digitSum = 0;
-            nChars = String.valueOf(n).toCharArray();
-            for (char c : nChars)
-                digitSum += Character.getNumericValue(c) * Character.getNumericValue(c);
-            if (!sums.contains(digitSum))
-                sums.add(digitSum);
-            else
-                return false;
-            n = digitSum;
+        return slow == 1;
+    }
+    
+    public int sumOfSquares(int n) {
+        int sum = 0;
+        int temp = 0;
+        while (n != 0) {
+            temp = n % 10;
+            sum += temp * temp;
+            n /= 10;
         }
-
-        return true;
+        
+        return sum;
     }
 }
