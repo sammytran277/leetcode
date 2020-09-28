@@ -1,54 +1,47 @@
 // https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
 
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 
 public class BinaryTreeZigZagLevelOrderTraversal {
     public class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
-        TreeNode(int x) { val = x; }
     }
 
-    // Iterative BFS, get each level, reverse odd levels
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> levels = new ArrayList<>();
-        if (root == null)
+        if (root == null) {
             return levels;
+        }
         
+        int levelNum = 0;
         LinkedList<TreeNode> q = new LinkedList<>();
-        q.addLast(root);
+        q.add(root);
         
-        // Idea is to get each level and reverse the odd ones
-        int parity = 0;
         while (q.size() != 0) {
-            int n = q.size();
+            int N = q.size();
             List<Integer> level = new ArrayList<>();
-            
-            // Remove all nodes from this particular level
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < N; i++) {
                 TreeNode currNode = q.pollFirst();
                 
-                // Add left child to queue
-                if (currNode.left != null)
-                    q.addLast(currNode.left);
+                if (levelNum % 2 != 0) {
+                    level.add(0, currNode.val);
+                } else {
+                    level.add(currNode.val);
+                }
                 
-                // Add right child to queue
-                if (currNode.right != null)
-                    q.addLast(currNode.right);
+                if (currNode.left != null) {
+                    q.add(currNode.left);
+                }
                 
-                level.add(currNode.val);
+                if (currNode.right != null) {
+                    q.add(currNode.right);
+                }
             }
             
-            // Reverse the level if this is an odd level
-            if (parity % 2 != 0)
-                Collections.reverse(level);
-
             levels.add(level);
-            parity++;
+            levelNum++;
         }
         
         return levels;
