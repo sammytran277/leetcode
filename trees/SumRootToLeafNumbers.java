@@ -9,18 +9,22 @@ public class SumRootToLeafNumbers {
     }
 
     public int sumNumbers(TreeNode root) {
-        return dfs(root, "");
+        return dfs(root, 0);
     }
     
-    public int dfs(TreeNode currNode, String num) {
-        if (currNode == null)
+    public int dfs(TreeNode root, int sum) {
+        if (root == null) {
             return 0;
-        else if (currNode.left == null && currNode.right == null)
-            return Integer.parseInt(num + currNode.val);
+        }
         
-        StringBuilder sb = new StringBuilder(num);
-        sb.append(currNode.val);
+        sum = (sum * 10) + root.val; 
+        if (root.left == null && root.right == null) {
+            return sum;
+        }
         
-        return dfs(currNode.left, sb.toString()) + dfs(currNode.right, sb.toString());
+        int left = dfs(root.left, sum);
+        int right = dfs(root.right, sum);
+        
+        return left + right;
     }
 }
