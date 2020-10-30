@@ -1,80 +1,99 @@
 // https://leetcode.com/problems/lru-cache/
 
-import java.util.LinkedList;
-import java.util.HashSet;
-import java.util.ListIterator;
+import java.util.*;
 
-public class LRUCache 
-{
-    public class Node 
-    {
+public class LRUCache {
+    class Node {
         int key;
         int val;
-        public Node(int key, int val) 
-        {
+        Node prev;
+        Node next;
+        
+        public Node(int key, int val) {
             this.key = key;
             this.val = val;
+            this.prev = null;
+            this.next = null;
         }
     }
     
-    int capacity;
-    LinkedList<Node> cache;
-    HashSet<Integer> keySet;
+    public void add(Node n) {
+        // Connect n in between head and head.next
+        n.prev = head;
+        n.next = head.next;
+        
+        // Adjust head.next
+        head.next.prev = n;
+        head.next = n;
+    }
     
-    public LRUCache(int capacity) 
-    {
+    public void remove(Node n) {
+        // Save previous and next nodes
+        Node prev = n.prev;
+        Node next = n.next;
+        
+        // Adjust pointers
+        prev.next = next;
+        next.prev = prev;
+    }
+    
+    public void moveToHead(Node n) {
+        remove(n);
+        add(n);
+    }
+    
+    public Node pollLast() {
+        Node result = tail.prev;
+        remove(result);
+        return result;
+    }    
+    
+    private int capacity;
+    private Node head;
+    private Node tail;
+    private Map<Integer, Node> keyToNode;
+    
+    public LRUCache(int capacity) {
         this.capacity = capacity;
-        this.cache = new LinkedList<Node>();
-        this.keySet = new HashSet<Integer>();
+        this.keyToNode = new HashMap<>();
+        
+        // Initialize dummy head and tail
+        this.head = new Node(0, 0);
+        this.tail = new Node(0, 0);
+        
+        // Dummy head and tail point at each other
+        head.next = tail;
+        tail.prev = head;
     }
     
-    public int get(int key) 
-    {
-        // Empty cache
-        if (cache.size() == 0)
+    public int get(int key) {
+        // Node is not in the list
+        if (!keyToNode.containsKey(key)) {
             return -1;
-        
-        ListIterator<Node> i = cache.listIterator(0);
-        while (i.hasNext())
-        {
-            Node target = i.next();
-
-            // Found the node with the target key
-            if (target.key == key)
-            {
-                i.remove();
-                cache.addLast(target);
-                return target.val;
-            }
         }
         
-        // Target key not in cache
-        return -1;
+        Node n = keyToNode.get(key);
+        moveToHead(n);
+        return n.val;
     }
     
-    public void put(int key, int value) 
-    {
-        Node newNode = new Node(key, value);
-        
-        // If key is already in cache, remove it
-        if (keySet.contains(key))
-        {   
-            // Get the key so that it is at the end of the cache, then remove
-            get(key);
-            cache.removeLast();
+    public void put(int key, int value) {
+        if (!keyToNode.containsKey(key)) {
+            // Remove tail if over capacity
+            if (keyToNode.size() >= capacity) {
+                Node removed = pollLast();
+                keyToNode.remove(removed.key);
+            }
+            
+            // Add new node to list and map
+            Node newNode = new Node(key, value);
+            keyToNode.put(key, newNode);
+            add(newNode);   
+        } else {
+            // If key is already in map, just update the value
+            Node n = keyToNode.get(key);
+            n.val = value;
+            moveToHead(n);
         }
-        
-        // Cache is already full, so remove LRU node
-        if (cache.size() == capacity)
-        {   
-            Node toRemove = cache.removeFirst();
-            keySet.remove(toRemove.key);
-            cache.addLast(newNode);
-        }
-        // Cache is not full, so we can just add it
-        else
-            cache.addLast(newNode);
-        
-        keySet.add(key);
     }
 }
