@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/maximum-xor-for-each-query/
+
 public class MaximumXORForEachQuery {
     public int[] getMaximumXor(int[] nums, int maximumBit) {
         int n = nums.length;
