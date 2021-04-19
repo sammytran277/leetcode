@@ -1,41 +1,26 @@
 // https://leetcode.com/problems/edit-distance/
 
-public class EditDistance
-{
-    /* Idea is to use a two dimensional DP array to store the
-       edit distance of word1 from [0, i) and word2 from [0, j) */
-    public int minDistance(String word1, String word2) 
-    {
-        int m = word1.length(), n = word2.length();
+public class EditDistance {
+    public int minDistance(String s, String t) {
+        int n = s.length();
+        int m = t.length();
+        int[][] dp = new int[n + 1][m + 1];
         
-        // Edge cases
-        if (m == 0)
-            return n;
-        else if (n == 0)
-            return m;
-        
-        int[][] dp = new int[m + 1][n + 1];
-        
-        // Populate top row
-        for (int i = 1; i <= m; i++)
+        for (int i = 0; i <= n; i++) {
             dp[i][0] = i;
-        
-        // Populate leftmost column
-        for (int i = 1; i <= n; i++)
+        }
+
+        for (int i = 0; i <= m; i++) {
             dp[0][i] = i;
-        
-        // Build DP array
-        for (int i = 1; i <= m; i++) 
-        {
-            for (int j = 1; j <= n; j++) 
-            {
-                if (word1.charAt(i - 1) == word2.charAt(j - 1))
-                    dp[i][j] = dp[i - 1][j - 1];
-                else
-                    dp[i][j] = 1 + Math.min(dp[i - 1][j], Math.min(dp[i][j - 1], dp[i - 1][j - 1]));
+        }
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                int cost = (s.charAt(i - 1) == t.charAt(j - 1)) ? 0 : 1;
+                dp[i][j] = Math.min(dp[i - 1][j] + 1, Math.min(dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost));
             }
         }
         
-        return dp[m][n];
+        return dp[n][m];
     }
 }
