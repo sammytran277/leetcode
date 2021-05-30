@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/check-if-word-equals-summation-of-two-words/
+
 public class CheckIfWordEqualsSummationOfTwoWords {
     public boolean isSumEqual(String firstWord, String secondWord, String targetWord) {
         return numValue(firstWord) + numValue(secondWord) == numValue(targetWord);
