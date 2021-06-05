@@ -1,5 +1,7 @@
 // https://leetcode.com/problems/finding-the-users-active-minutes/
 
+import java.util.*;
+
 public class FindingTheUsersActiveMinutes {
     public int[] findingUsersActiveMinutes(int[][] logs, int k) {
         Map<Integer, Set<Integer>> map = new HashMap<>();
